@@ -1,2 +1,5 @@
-env/
+.vscode/
 TOKEN.txt
+env/
+bot.log
+
