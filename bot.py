@@ -5,7 +5,7 @@ from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, Regex
 from utils import get_keyboard, greet_user
 from dialogflow import listen_to_me
 from user_profile import profile_start, profile_get_name, profile_get_age, profile_get_gender
-from send_image import get_image
+from send_image import send_cat
 PROXY = {
     'proxy_url': 'socks5://t1.learn.python.ru:1080',
     'urllib3_proxy_kwargs': {
@@ -39,7 +39,7 @@ def main():
     )
     dp.add_handler(profile)
     dp.add_handler(CommandHandler('start', greet_user))#если придет старт, реагируем функцией 
-    dp.add_handler(CommandHandler('image',get_image))
+    dp.add_handler(CommandHandler('image',send_cat))
     dp.add_handler(RegexHandler('^(Выслушай меня!)$',
                      listen_to_me,))
     dp.add_handler(MessageHandler(Filters.text,listen_to_me))

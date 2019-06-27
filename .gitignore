@@ -2,4 +2,8 @@
 TOKEN.txt
 env/
 bot.log
+elate.db
+__pycache__
+cats.html
+motivations.html
 
