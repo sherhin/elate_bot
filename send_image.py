@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 from random import choice
+from functools import lru_cache
 
 def get_html(url):
     try:
@@ -11,7 +12,8 @@ def get_html(url):
         print('Что-то пошло не так')
         return False
 
-def get_image(bot,update):
+@lru_cache(maxsize=None)
+def get_image():
     cat_lst=[]
     url=get_html('http://www.anekdotov-mnogo.ru/content.php?p=smeshnye_koshki&page=')
     for i in range(1,50):
@@ -23,6 +25,10 @@ def get_image(bot,update):
             a=a.find('img')
             image_url=a['src']
             cat_lst.append(image_url)
+    return cat_lst
+
+def send_cat(bot,update):
+    cat_lst=get_image()
     send_cat=choice(cat_lst)
     update.message.reply_text(send_cat)
         
