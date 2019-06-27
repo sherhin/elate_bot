@@ -1,7 +1,6 @@
 from telegram import ReplyKeyboardMarkup, KeyboardButton, ReplyKeyboardRemove
 import sqlite3
-from bot import greet_user
-
+from utils import greet_user
 def profile_start(bot,update,user_data):
     text = 'Для того, чтобы лучше тебя понимать, нам надо познакомиться поближе. Скажи, как тебя зовут?'
     update.message.reply_text(text,reply_markup=ReplyKeyboardRemove())

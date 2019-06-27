@@ -1,14 +1,11 @@
 import logging
-import datetime
-import sqlite3
 import sys
-import apiai, json
+import sqlite3
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, RegexHandler,ConversationHandler
-from telegram import ReplyKeyboardMarkup, KeyboardButton, ReplyKeyboardRemove
-from utils import get_keyboard
-from diagoflow import *
-from user_profile import *
-
+from utils import get_keyboard, greet_user
+from dialogflow import listen_to_me
+from user_profile import profile_start, profile_get_name, profile_get_age, profile_get_gender
+from send_image import get_image
 PROXY = {
     'proxy_url': 'socks5://t1.learn.python.ru:1080',
     'urllib3_proxy_kwargs': {
@@ -21,15 +18,7 @@ PROXY = {
 logging.basicConfig(format='%(asctime)s - %(levelname)s - %(message)s',
                     level=logging.INFO,
                     filename='bot.log'
-                    )   
-
-
-def greet_user(bot,update):
-    text = 'Привет! Я твой персональный ассистент по настроению! Что ты хочешь?'
-    update.message.reply_text(text, reply_markup=get_keyboard())
-
-    
-
+                    ) 
 def main():
     with open('TOKEN.txt') as f:
         token = f.read().strip()
@@ -50,6 +39,7 @@ def main():
     )
     dp.add_handler(profile)
     dp.add_handler(CommandHandler('start', greet_user))#если придет старт, реагируем функцией 
+    dp.add_handler(CommandHandler('image',get_image))
     dp.add_handler(RegexHandler('^(Выслушай меня!)$',
                      listen_to_me,))
     dp.add_handler(MessageHandler(Filters.text,listen_to_me))
