@@ -15,10 +15,11 @@ def get_html(url):
 @lru_cache(maxsize=None)
 def get_image():
     cat_lst=[]
-    url=get_html('http://www.anekdotov-mnogo.ru/content.php?p=smeshnye_koshki&page=')
+    url=('http://www.anekdotov-mnogo.ru/content.php?p=smeshnye_koshki&page=')
     for i in range(1,50):
         next_url=url+str((i))
-        soup=BeautifulSoup(next_url,'html.parser')
+        html=get_html(next_url)
+        soup=BeautifulSoup(html,'html.parser')
         image=soup.find_all('div',class_='imagesWidthDiv')
         image=list(image)
         for a in image:
@@ -26,10 +27,8 @@ def get_image():
             image_url=a['src']
             cat_lst.append(image_url)
     return cat_lst
-
+    
 def send_cat(bot,update):
     cat_lst=get_image()
     send_cat=choice(cat_lst)
     update.message.reply_text(send_cat)
-        
-

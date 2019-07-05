@@ -1,11 +1,12 @@
 import logging
 import sys
-import sqlite3
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, RegexHandler,ConversationHandler
-from utils import get_keyboard, greet_user
+from utils import get_keyboard, greet_user, fun_start
 from dialogflow import listen_to_me
-from user_profile import profile_start, profile_get_name, profile_get_age, profile_get_gender
 from send_image import send_cat
+from mem import send_mem, send_joke
+from db import db
+from conversations import profile
 PROXY = {
     'proxy_url': 'socks5://t1.learn.python.ru:1080',
     'urllib3_proxy_kwargs': {
@@ -26,19 +27,18 @@ def main():
     mybot = Updater(token, request_kwargs=PROXY)
     dp = mybot.dispatcher #реагирование на событие
 
-    profile=ConversationHandler(
-    entry_points = [RegexHandler('^(Познакомься со мной!)$',
-                     profile_start, pass_user_data=True)],
-    states={
-        'name':[MessageHandler(Filters.text,profile_get_name,pass_user_data=True)],
-        'age':[MessageHandler(Filters.text,profile_get_age,pass_user_data=True)],
-        'gender':[RegexHandler('^(Определенно, мужчина|Определенно, женщина|Один из шестидесяти гендеров)$',
-        profile_get_gender,pass_user_data=True)],
-    },
-    fallbacks=[],
-    )
+    dp.add_handler(CommandHandler('start', greet_user))
+    
     dp.add_handler(profile)
-    dp.add_handler(CommandHandler('start', greet_user))#если придет старт, реагируем функцией 
+
+    dp.add_handler(RegexHandler('^(Котики)$',
+                     send_cat))
+    dp.add_handler(RegexHandler('^(Мемы)$',
+                     send_mem))
+    dp.add_handler(RegexHandler('^(Подними мне настроение!)$',
+                     fun_start,))
+    dp.add_handler(RegexHandler('^(Анекдоты)$',
+                     send_joke))
     dp.add_handler(CommandHandler('image',send_cat))
     dp.add_handler(RegexHandler('^(Выслушай меня!)$',
                      listen_to_me,))

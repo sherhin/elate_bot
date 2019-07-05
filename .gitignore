@@ -5,5 +5,4 @@ bot.log
 elate.db
 __pycache__
 cats.html
-motivations.html
-
+tests/
