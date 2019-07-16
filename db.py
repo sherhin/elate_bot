@@ -11,8 +11,8 @@ def get_user(db,effective_user,message):
     user = db.users.find_one({"user_id": effective_user.id})
     if not user:
         return False
-    else:
-        return True
+    if user:
+        return user
 
     
 class FilterAwesome (BaseFilter):
@@ -20,6 +20,7 @@ class FilterAwesome (BaseFilter):
         user=message.from_user
         db_user=get_user(db,user,message)
         return db_user
+        
 
 
         
@@ -31,7 +32,7 @@ filter_awesome=FilterAwesome()
 
 
 def create_user(db, effective_user, message,user_data):
-    db_user = {
+    user = {
         "user_id": effective_user.id,
         "first_name": effective_user.first_name,
         "last_name": effective_user.last_name,
@@ -41,11 +42,11 @@ def create_user(db, effective_user, message,user_data):
         "profile_age":user_data['age'],
         "profile_gender":user_data['gender'],
         }
-    db.users.insert_one(db_user)
-    return db_user
+    db.users.insert_one(user)
+    return user
 
 def profile_start(bot,update):
-    text = 'Привет! Я твой персональный ассистент по настроению! Я еще маленький и глупый, но благодаря тебе я стану лучше. Нам надо познакомиться поближе. Скажи, как тебя зовут?'
+    text = 'Для того, чтобы лучше тебя понимать, нам надо познакомиться поближе. Скажи, как тебя зовут?'
     update.message.reply_text(text,reply_markup=ReplyKeyboardRemove())
     return 'name'
 
@@ -78,7 +79,7 @@ def profile_get_gender(bot,update,user_data):
 
 
 profile=ConversationHandler(
-    entry_points = [CommandHandler('profile',profile_start)],
+    entry_points = [MessageHandler(Filters.text,profile_start)],
     states={
         'name':[MessageHandler(Filters.text,profile_get_name,pass_user_data=True)],
         'age':[MessageHandler(Filters.text,profile_get_age,pass_user_data=True)],
@@ -87,9 +88,17 @@ profile=ConversationHandler(
     },
     fallbacks=[],
 )
-def greet_user(bot,update,db_user):
-    if db_user:
+def greet_user(bot,update):
+    user = get_user(db,update.effective_user,update.message)
+    if user==False:
+        text = 'Привет! Я твой персональный ассистент по настроению! Я еще маленький и глупый, но благодаря тебе я стану лучше.'
+        update.message.reply_text(text, reply_markup=profile_keyboard())
+        profile_start(bot,update)
+        print(update.message.from_user)
+    else:
         user_name=user['profile_name']
         text = f'Привет,{user_name}! Я рад тебя видеть! Чем я могу помочь тебе сегодня?'
         update.message.reply_text(text, reply_markup=get_keyboard())
+        print(update.message.from_user)
+
 

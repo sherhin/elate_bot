@@ -30,7 +30,7 @@ def main():
     mybot = Updater(token, request_kwargs=PROXY)
     dp = mybot.dispatcher #реагирование на событие
     
-    dp.add_handler(CommandHandler('start', greet_user))
+    dp.add_handler(MessageHandler(filter_awesome, greet_user))
     dp.add_handler(RegexHandler('^(Вернуться)$',
                      greet_user))
     dp.add_handler(profile)
