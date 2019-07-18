@@ -32,6 +32,7 @@ def back_keyboard():
 
 
 def fun_start(bot,update):
+    
     text = 'Как мне тебя развлечь?'
     update.message.reply_text(text, reply_markup=fun_keyboard())
 

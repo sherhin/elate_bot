@@ -1,8 +1,7 @@
 .vscode/
-TOKEN.txt
 env/
+__pycache__
+tests/
 bot.log
 elate.db
-__pycache__
-cats.html
-tests/
+settings.py

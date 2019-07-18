@@ -19,9 +19,8 @@ class FilterAwesome (BaseFilter):
     def filter(self,message):
         user=message.from_user
         db_user=get_user(db,user,message)
-        return db_user
-        
-
+        if not db_user:
+            return True
 
         
 
@@ -75,11 +74,12 @@ def profile_get_gender(bot,update,user_data):
     update.message.reply_text(f'Я запомнил ;-) ')
     update.message.reply_text(f'Спасибо за ответы! Теперь мы стали чуточку ближе) ')
     create_user(db,update.effective_user,update.message,user_data)
+    return greet_user(bot,update)
 
 
 
 profile=ConversationHandler(
-    entry_points = [MessageHandler(Filters.text,profile_start)],
+    entry_points =[MessageHandler(filter_awesome,profile_start)],
     states={
         'name':[MessageHandler(Filters.text,profile_get_name,pass_user_data=True)],
         'age':[MessageHandler(Filters.text,profile_get_age,pass_user_data=True)],
@@ -94,11 +94,8 @@ def greet_user(bot,update):
         text = 'Привет! Я твой персональный ассистент по настроению! Я еще маленький и глупый, но благодаря тебе я стану лучше.'
         update.message.reply_text(text, reply_markup=profile_keyboard())
         profile_start(bot,update)
-        print(update.message.from_user)
-    else:
-        user_name=user['profile_name']
-        text = f'Привет,{user_name}! Я рад тебя видеть! Чем я могу помочь тебе сегодня?'
-        update.message.reply_text(text, reply_markup=get_keyboard())
-        print(update.message.from_user)
+    user_name=user['profile_name']
+    text = f'Привет,{user_name}! Я рад тебя видеть! Чем я могу помочь тебе сегодня?'
+    update.message.reply_text(text, reply_markup=get_keyboard())
 
 

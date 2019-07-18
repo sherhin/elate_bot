@@ -7,15 +7,8 @@ from send_image import send_cat,send_bash
 from mem import send_mem, send_joke
 from db import db,profile, greet_user
 from db import filter_awesome
-
-
-PROXY = {
-    'proxy_url': 'socks5://t1.learn.python.ru:1080',
-    'urllib3_proxy_kwargs': {
-        'username': 'learn',
-        'password': 'python',
-    },
-}
+from search import user_search
+from settings import TOKEN_BOT,PROXY
 
 
 logging.basicConfig(format='%(asctime)s - %(levelname)s - %(message)s',
@@ -24,16 +17,15 @@ logging.basicConfig(format='%(asctime)s - %(levelname)s - %(message)s',
                     ) 
 
 def main():
-    with open('TOKEN.txt') as f:
-        token = f.read().strip()
 
-    mybot = Updater(token, request_kwargs=PROXY)
+    mybot = Updater(TOKEN_BOT, request_kwargs=PROXY)
     dp = mybot.dispatcher #реагирование на событие
     
-    dp.add_handler(MessageHandler(filter_awesome, greet_user))
+    dp.add_handler(profile)
+    dp.add_handler(CommandHandler('start', greet_user))
     dp.add_handler(RegexHandler('^(Вернуться)$',
                      greet_user))
-    dp.add_handler(profile)
+    dp.add_handler(CommandHandler('search',user_search))
 
     dp.add_handler(RegexHandler('^(Котики)$',
                      send_cat))

@@ -1,9 +1,9 @@
 import apiai, json
 from telegram.ext import Updater
 from telegram import ReplyKeyboardMarkup, KeyboardButton, ReplyKeyboardRemove
-
+from settings import DIALOG_FLOW
 def listen_to_me(bot,update):
-    request = apiai.ApiAI('2d63bff1ad0d48348ea28e6d162409ae').text_request() # Токен API к Dialogflow
+    request = apiai.ApiAI(DIALOG_FLOW).text_request() # Токен API к Dialogflow
     request.lang = 'ru' # На каком языке будет послан запрос
     request.chat_id = 'ElateBot' # ID Сессии диалога (нужно, чтобы потом учить бота)
     request.query = update.message.text # Посылаем запрос к ИИ с сообщением от юзера

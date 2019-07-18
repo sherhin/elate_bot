@@ -1,7 +1,9 @@
 import requests
-from bs4 import BeautifulSoup, BeautifulStoneSoup
+from bs4 import BeautifulSoup
 from random import choice
 from functools import lru_cache
+from db import db
+from fake_useragent import FakeUserAgent
 
 def get_html(url):
     try:
@@ -27,19 +29,44 @@ def get_image():
             image_url=a['src']
             cat_lst.append(image_url)
     return cat_lst
-    
+
+
+def get_mem():
+    mem_list=[]
+    count=1
+    while count!=10:
+        page_number=str(count)
+        page_link = 'http://knowyourmeme.com/memes/all/page/{}'.format(page_number)
+
+        response = requests.get(page_link, headers={'User-Agent': FakeUserAgent().chrome})
+        if not response.ok:
+            return []
+        html = response.content
+        soup = BeautifulSoup(html,'html.parser')
+        meme_links = soup.findAll('a',class_='photo')
+        for elem in meme_links:
+            elem=elem.find('img')
+            mem_link=elem['data-src']
+            mem={'link':mem_link}
+            '''db.memes.insert_one(mem)'''
+            mem_list.append(mem_link)
+        count+=1
+    return mem_list
+
+
 def send_cat(bot,update):
     cat_lst=get_image()
     send_cat=choice(cat_lst)
     update.message.reply_text(send_cat)
 
-def send_bash(bot,update):
-    url='http://bash.im/random'
-    html=get_html(url)
-    soup=BeautifulSoup(html,'html.parser')
-    quote=soup.find('div', class_="quote__body",text=True)
-    pure_quote=quote.text
-    update.message.reply_text(str(pure_quote))
+
+def send_mem(bot,update):
+    mem_list=get_mem()
+    mem=choice(mem_list)
+    update.message.reply_text(mem)
        
 
 
+'''def send_mem(bot,update):
+    send_mem=db.memes.aggregate([{ '$sample': { 'size': 1 } }])
+    update.message.reply_text(send_mem)'''
