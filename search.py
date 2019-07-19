@@ -2,6 +2,8 @@ from settings import GOOGLE_API,GOOGLE_KEY
 import requests
 from fake_useragent import FakeUserAgent
 import json
+from telegram import ReplyKeyboardRemove, ReplyKeyboardMarkup
+from utils import back_keyboard
 
 def text_search(user_search):
     url=f'https://www.googleapis.com/customsearch/v1?key={GOOGLE_API}&cx={GOOGLE_KEY}&q={user_search}'
@@ -25,10 +27,15 @@ def text_search(user_search):
     return results
 
 
-def user_search(bot,update):
-    user_answer=update.message.text
-    search_result=text_search(user_answer)
+def search(bot,update,user_data):
+    text='Что для тебя поискать,солнышко? Напиши "Найди" и то, что ты хочешь найти.'
+    update.message.reply_text(text, reply_markup=ReplyKeyboardRemove())
+    return 'user_search'
+
+def user_search(bot,update,user_data):
+    user_data['user_search']=update.message.text
+    search_result=text_search(user_data['user_search'])
     for i in search_result:
-        update.message.reply_text("\n\n".join(i))
+        update.message.reply_text("\n\n".join(i),reply_markup=back_keyboard())
         
 

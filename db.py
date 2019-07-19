@@ -2,7 +2,7 @@ from pymongo import MongoClient
 import settings
 from telegram import ReplyKeyboardMarkup, KeyboardButton, ReplyKeyboardRemove
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, RegexHandler,ConversationHandler, BaseFilter
-from utils import get_keyboard, profile_keyboard
+
 
 
 db = MongoClient(settings.MONGO_LINK)[settings.MONGO_DB]
@@ -88,14 +88,22 @@ profile=ConversationHandler(
     },
     fallbacks=[],
 )
+
+
+
+
+def start_keyboard():
+    start_keyboard = ReplyKeyboardMarkup([
+        ['Погугли'],['Поболтай со мной'],['Подними мне настроение!'],['Обо мне']]
+    , resize_keyboard=True
+    )
+    return start_keyboard
+
 def greet_user(bot,update):
     user = get_user(db,update.effective_user,update.message)
     if user==False:
         text = 'Привет! Я твой персональный ассистент по настроению! Я еще маленький и глупый, но благодаря тебе я стану лучше.'
-        update.message.reply_text(text, reply_markup=profile_keyboard())
-        profile_start(bot,update)
+        update.message.reply_text(text)
     user_name=user['profile_name']
     text = f'Привет,{user_name}! Я рад тебя видеть! Чем я могу помочь тебе сегодня?'
-    update.message.reply_text(text, reply_markup=get_keyboard())
-
-
+    update.message.reply_text(text, reply_markup=start_keyboard())

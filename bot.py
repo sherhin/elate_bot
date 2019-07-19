@@ -1,13 +1,11 @@
 import logging
 import sys
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, RegexHandler,ConversationHandler,BaseFilter
-from utils import fun_start
+from utils import fun_start, about_me,bot_say_hi
 from dialogflow import listen_to_me
-from send_image import send_cat,send_bash
-from mem import send_mem, send_joke
-from db import db,profile, greet_user
-from db import filter_awesome
-from search import user_search
+from send_to_user import get_image,get_mem,send_cat,send_mem, send_bash,send_joke
+from db import db,profile, greet_user,filter_awesome
+from search import search, user_search
 from settings import TOKEN_BOT,PROXY
 
 
@@ -16,9 +14,20 @@ logging.basicConfig(format='%(asctime)s - %(levelname)s - %(message)s',
                     filename='bot.log'
                     ) 
 
+
+class FilterAwesome ( BaseFilter ):
+     def  filter ( self,message ):
+         return 'Найди' in message.text
+search_filter=FilterAwesome()
+
 def main():
 
     mybot = Updater(TOKEN_BOT, request_kwargs=PROXY)
+
+    mybot.job_queue.run_repeating(bot_say_hi,interval=86400)
+    mybot.job_queue.run_repeating(get_image,interval=86400)
+    mybot.job_queue.run_repeating(get_mem, interval=86400)
+
     dp = mybot.dispatcher #реагирование на событие
     
     dp.add_handler(profile)
@@ -37,10 +46,21 @@ def main():
                      send_joke))
     dp.add_handler(RegexHandler('^(Башорг)$',
                      send_bash))
-    dp.add_handler(CommandHandler('image',send_cat))
-    dp.add_handler(RegexHandler('^(Выслушай меня!)$',
-                     listen_to_me,))
+    dp.add_handler(RegexHandler('^(Обо мне)$',
+                     about_me))
+    dp.add_handler(RegexHandler('^(Поболтай со мной!)$',
+                     listen_to_me))
+    bot_search=ConversationHandler(
+        entry_points=[RegexHandler('^(Погугли)$',
+                     search,pass_user_data=True)],
+        states={
+            'user_search':[MessageHandler(search_filter,user_search,pass_user_data=True)]
+        },
+        fallbacks=[],
+    )
+    dp.add_handler(bot_search)
     dp.add_handler(MessageHandler(Filters.text,listen_to_me))
+
     
 
 
@@ -52,4 +72,4 @@ def main():
 
 if __name__ == '__main__':
     main()
-    
+
