@@ -45,7 +45,7 @@ def create_user(db, effective_user, message,user_data):
     return user
 
 def profile_start(bot,update):
-    text = 'Для того, чтобы лучше тебя понимать, нам надо познакомиться поближе. Скажи, как тебя зовут?'
+    text = 'Привет! Меня зовут Эляша и я твой персональный ассистент для поднятия настроения. Я еще маленький и глупый, но благодаря тебе я стану лучше.Скажи, как тебя зовут?'
     update.message.reply_text(text,reply_markup=ReplyKeyboardRemove())
     return 'name'
 
@@ -104,6 +104,7 @@ def greet_user(bot,update):
     if user==False:
         text = 'Привет! Я твой персональный ассистент по настроению! Я еще маленький и глупый, но благодаря тебе я стану лучше.'
         update.message.reply_text(text)
+        profile_start(bot,update)
     user_name=user['profile_name']
     text = f'Привет,{user_name}! Я рад тебя видеть! Чем я могу помочь тебе сегодня?'
     update.message.reply_text(text, reply_markup=start_keyboard())

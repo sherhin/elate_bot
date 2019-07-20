@@ -17,7 +17,6 @@ def get_html(url):
 
 @lru_cache(maxsize=None)
 def get_image(bot,job):
-    cat_lst=[]
     url=('http://www.anekdotov-mnogo.ru/content.php?p=smeshnye_koshki&page=')
     for i in range(1,50):
         next_url=url+str((i))

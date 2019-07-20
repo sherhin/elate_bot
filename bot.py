@@ -5,7 +5,7 @@ from utils import fun_start, about_me,bot_say_hi
 from dialogflow import listen_to_me
 from send_to_user import get_image,get_mem,send_cat,send_mem, send_bash,send_joke
 from db import db,profile, greet_user,filter_awesome
-from search import search, user_search
+from search import search, user_search,stop_search
 from settings import TOKEN_BOT,PROXY
 
 
@@ -15,10 +15,10 @@ logging.basicConfig(format='%(asctime)s - %(levelname)s - %(message)s',
                     ) 
 
 
-class FilterAwesome ( BaseFilter ):
+'''class FilterAwesome ( BaseFilter ):
      def  filter ( self,message ):
          return 'Найди' in message.text
-search_filter=FilterAwesome()
+search_filter=FilterAwesome()'''
 
 def main():
 
@@ -54,7 +54,8 @@ def main():
         entry_points=[RegexHandler('^(Погугли)$',
                      search,pass_user_data=True)],
         states={
-            'user_search':[MessageHandler(search_filter,user_search,pass_user_data=True)]
+            'user_search':[RegexHandler('^(Отмена поиска)$',stop_search,pass_user_data=True),
+            MessageHandler(Filters.text,user_search,pass_user_data=True)],
         },
         fallbacks=[],
     )

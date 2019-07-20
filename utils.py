@@ -11,13 +11,19 @@ def fun_keyboard():
     return fun_keyboard
 
 
+def search_back_keyboard():
+    back_keyboard=ReplyKeyboardMarkup([
+        ['Вернуться'],['Отмена поиска']]
+    , resize_keyboard=True
+    )
+    return back_keyboard
+
 def back_keyboard():
     back_keyboard=ReplyKeyboardMarkup([
         ['Вернуться']]
     , resize_keyboard=True
     )
     return back_keyboard
-
 
 def fun_start(bot,update):
     
