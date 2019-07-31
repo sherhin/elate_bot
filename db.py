@@ -2,6 +2,8 @@ from pymongo import MongoClient
 from telegram import ReplyKeyboardMarkup, KeyboardButton, ReplyKeyboardRemove
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, RegexHandler, ConversationHandler, BaseFilter
 
+MONGO_LINK=os.environ.get('MONGO_LINK')
+MONGO_DB=os.environ.get('MONGO_DB')
 db = MongoClient(MONGO_LINK)[MONGO_DB]
 
 

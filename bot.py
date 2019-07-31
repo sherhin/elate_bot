@@ -1,4 +1,5 @@
 import logging
+import os
 import sys
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, RegexHandler, ConversationHandler, BaseFilter
 from utils import fun_start, about_me, bot_say_hi
@@ -25,7 +26,7 @@ PROXY = {
         'password': 'python',
     },
 }
-
+TOKEN_BOT =os.environ.get('TOKEN_BOT')
 def main():
     mybot = Updater(TOKEN_BOT, request_kwargs=PROXY)
 
