@@ -3,8 +3,8 @@ import os
 from telegram import ReplyKeyboardMarkup, KeyboardButton, ReplyKeyboardRemove
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, RegexHandler, ConversationHandler, BaseFilter
 
-MONGO_LINK=os.environ.get('MONGO_LINK')
-MONGO_DB=os.environ.get('MONGO_DB')
+MONGO_LINK = os.environ.get('MONGO_LINK')
+MONGO_DB = os.environ.get('MONGO_DB')
 db = MongoClient(MONGO_LINK)[MONGO_DB]
 
 
@@ -99,7 +99,7 @@ def start_keyboard():
 
 def greet_user(bot, update):
     user = get_user(db, update.effective_user, update.message)
-    if user == False:
+    if not user:
         text = 'Привет! Я твой персональный ассистент по настроению! Я еще маленький и глупый, но благодаря тебе я стану лучше.'
         update.message.reply_text(text)
         profile_start(bot, update)

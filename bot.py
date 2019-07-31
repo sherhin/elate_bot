@@ -11,13 +11,7 @@ from search import search, user_search, stop_search
 
 logging.basicConfig(format='%(asctime)s - %(levelname)s - %(message)s',
                     level=logging.INFO,
-                    filename='bot.log'
-                    )
-
-'''class FilterAwesome ( BaseFilter ):
-     def  filter ( self,message ):
-         return 'Найди' in message.text
-search_filter=FilterAwesome()'''
+                    filename='bot.log')
 
 PROXY = {
     'proxy_url': 'socks5://t1.learn.python.ru:1080',
@@ -26,7 +20,9 @@ PROXY = {
         'password': 'python',
     },
 }
-TOKEN_BOT =os.environ.get('TOKEN_BOT')
+TOKEN_BOT = os.environ.get('TOKEN_BOT')
+
+
 def main():
     mybot = Updater(TOKEN_BOT, request_kwargs=PROXY)
 

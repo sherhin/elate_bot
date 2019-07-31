@@ -1,7 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
 from random import choice, random, randrange
-from functools import lru_cache
 from db import db
 from fake_useragent import FakeUserAgent
 import json
@@ -17,7 +16,6 @@ def get_html(url):
         return False
 
 
-@lru_cache(maxsize=None)
 def get_image(bot, job):
     url = ('http://www.anekdotov-mnogo.ru/content.php?p=smeshnye_koshki&page=')
     for i in range(1, 50):
@@ -55,21 +53,21 @@ def get_mem(bot, job):
     return db.memes
 
 
-def send_mem(bot, update):
+def send_mem(bot, update):#мемы
     count = db.memes.count()
     link = db.memes.find()[randrange(count)]
     mem_link = link['link']
     update.message.reply_text(mem_link)
 
 
-def send_cat(bot, update):
+def send_cat(bot, update):#котики
     count = db.cats.count()
     link = db.cats.find()[randrange(count)]
     cat_link = link['link']
     update.message.reply_text(cat_link)
 
 
-def send_bash(bot, update):
+def send_bash(bot, update):#башорг
     url = 'http://bash.im/random'
     html = get_html(url)
     soup = BeautifulSoup(html, 'html.parser')
@@ -78,7 +76,7 @@ def send_bash(bot, update):
     update.message.reply_text(str(pure_quote))
 
 
-def send_joke(bot, update):
+def send_joke(bot, update):#анекдоты
     url = 'http://rzhunemogu.ru/RandJSON.aspx?CType=1'
     res = requests.get(url)
     joke = json.JSONDecoder(strict=False).decode(res.content.decode('windows-1251'))

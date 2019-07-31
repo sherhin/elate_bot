@@ -4,8 +4,8 @@ from fake_useragent import FakeUserAgent
 import json
 from telegram import ReplyKeyboardRemove, ReplyKeyboardMarkup
 from utils import search_back_keyboard
-GOOGLE_API=os.environ.get('GOOGLE_API')
-GOOGLE_KEY=os.environ.get('GOOGLE_KEY')
+GOOGLE_API = os.environ.get('GOOGLE_API')
+GOOGLE_KEY = os.environ.get('GOOGLE_KEY')
 
 
 def text_search(user_search):
