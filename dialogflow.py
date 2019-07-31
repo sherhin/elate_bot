@@ -1,7 +1,7 @@
 import apiai, json
 from telegram.ext import Updater
 from utils import back_keyboard
-from settings import DIALOG_FLOW
+
 
 
 def listen_to_me(bot, update):

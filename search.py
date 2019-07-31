@@ -1,4 +1,4 @@
-from settings import GOOGLE_API, GOOGLE_KEY
+
 import requests
 from fake_useragent import FakeUserAgent
 import json

@@ -1,9 +1,8 @@
 from pymongo import MongoClient
-import settings
 from telegram import ReplyKeyboardMarkup, KeyboardButton, ReplyKeyboardRemove
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, RegexHandler, ConversationHandler, BaseFilter
 
-db = MongoClient(settings.MONGO_LINK)[settings.MONGO_DB]
+db = MongoClient(MONGO_LINK)[MONGO_DB]
 
 
 def get_user(db, effective_user, message):

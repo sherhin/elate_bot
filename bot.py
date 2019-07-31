@@ -6,7 +6,7 @@ from dialogflow import listen_to_me
 from send_to_user import get_image, get_mem, send_cat, send_mem, send_bash, send_joke
 from db import db, profile, greet_user, filter_awesome
 from search import search, user_search, stop_search
-from settings import TOKEN_BOT
+
 
 logging.basicConfig(format='%(asctime)s - %(levelname)s - %(message)s',
                     level=logging.INFO,
