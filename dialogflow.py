@@ -1,8 +1,9 @@
+import os
 import apiai, json
 from telegram.ext import Updater
 from utils import back_keyboard
 
-
+DIALOG_FLOW=os.environ.get('DIALOG_FLOW')
 
 def listen_to_me(bot, update):
     request = apiai.ApiAI(DIALOG_FLOW).text_request()  # Токен API к Dialogflow
