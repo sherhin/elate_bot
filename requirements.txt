@@ -23,7 +23,6 @@ lazy-object-proxy==1.4.1
 mccabe==0.6.1
 numpy==1.16.4
 pandas==0.24.2
-pkg-resources
 pyasn1==0.4.5
 pyasn1-modules==0.2.5
 pycparser==2.19
