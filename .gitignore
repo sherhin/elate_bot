@@ -5,3 +5,6 @@ tests/
 bot.log
 elate.db
 settings.py
+.idea/
+README.txt
+
