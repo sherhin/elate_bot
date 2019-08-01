@@ -59,7 +59,7 @@ def profile_get_age(bot, update, user_data):
     user_data['age'] = update.message.text
     reply_keyboard = [['Определенно, мужчина', 'Определенно, женщина', 'Один из шестидесяти гендеров']]
     update.message.reply_text(text='А ты мальчик, девочка или пока не определился?',
-                              reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True))
+                              reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True, resize_keyboard=True))
     return 'gender'
 
 
