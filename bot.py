@@ -13,18 +13,12 @@ logging.basicConfig(format='%(asctime)s - %(levelname)s - %(message)s',
                     level=logging.INFO,
                     filename='bot.log')
 
-PROXY = {
-    'proxy_url': 'socks5://t1.learn.python.ru:1080',
-    'urllib3_proxy_kwargs': {
-        'username': 'learn',
-        'password': 'python',
-    },
-}
+
 TOKEN_BOT = os.environ.get('TOKEN_BOT')
 
 
 def main():
-    mybot = Updater(TOKEN_BOT, request_kwargs=PROXY)
+    mybot = Updater(TOKEN_BOT)
 
     mybot.job_queue.run_repeating(bot_say_hi, interval=86400)
     mybot.job_queue.run_repeating(get_image, interval=604800)
