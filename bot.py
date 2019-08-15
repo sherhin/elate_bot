@@ -1,6 +1,7 @@
 import logging
 import os
 import sys
+from settings import PROXY
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, RegexHandler, ConversationHandler, BaseFilter
 from utils import fun_start, about_me, bot_say_hi
 from dialogflow import listen_to_me
@@ -19,7 +20,7 @@ TOKEN_BOT = os.environ.get('TOKEN_BOT')
 
 
 def main():
-    mybot = Updater(TOKEN_BOT)
+    mybot = Updater(TOKEN_BOT, request_kwargs=PROXY)
 
     mybot.job_queue.run_repeating(bot_say_hi, interval=86400)
     mybot.job_queue.run_repeating(get_image, interval=604800)
@@ -64,4 +65,4 @@ def main():
 
 
 if __name__ == '__main__':
-    print(os.environ)
+    main()
