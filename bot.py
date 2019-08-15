@@ -5,7 +5,8 @@ from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, Regex
 from utils import fun_start, about_me, bot_say_hi
 from dialogflow import listen_to_me
 from send_to_user import get_image, get_mem, send_cat, send_mem, send_bash, send_joke
-from db import db, profile, greet_user, filter_awesome
+from db import db,greet_user
+from conversation import profile
 from search import search, user_search, stop_search
 
 
@@ -63,4 +64,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    print(os.environ)

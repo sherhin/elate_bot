@@ -1,7 +1,6 @@
 from pymongo import MongoClient
 import os
 from telegram import ReplyKeyboardMarkup, KeyboardButton, ReplyKeyboardRemove
-from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, RegexHandler, ConversationHandler, BaseFilter
 
 MONGO_LINK = os.environ.get('MONGO_LINK')
 MONGO_DB = os.environ.get('MONGO_DB')
@@ -14,17 +13,6 @@ def get_user(db, effective_user, message):
         return False
     if user:
         return user
-
-
-class FilterAwesome(BaseFilter):
-    def filter(self, message):
-        user = message.from_user
-        db_user = get_user(db, user, message)
-        if not db_user:
-            return True
-
-
-filter_awesome = FilterAwesome()
 
 
 def create_user(db, effective_user, message, user_data):
@@ -77,16 +65,6 @@ def profile_get_gender(bot, update, user_data):
     return greet_user(bot, update)
 
 
-profile = ConversationHandler(
-    entry_points=[MessageHandler(filter_awesome, profile_start)],
-    states={
-        'name': [MessageHandler(Filters.text, profile_get_name, pass_user_data=True)],
-        'age': [MessageHandler(Filters.text, profile_get_age, pass_user_data=True)],
-        'gender': [RegexHandler('^(Определенно, мужчина|Определенно, женщина|Один из шестидесяти гендеров)$',
-                                profile_get_gender, pass_user_data=True)],
-    },
-    fallbacks=[],
-)
 
 
 def start_keyboard():
